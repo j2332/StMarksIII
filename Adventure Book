@@ -1,0 +1,772 @@
+package Projects;
+
+//James Sabet, cs Java class
+//During this project didn't really need to look anything up
+//You will see many functions with Names NorthA3llfrf and there are too many functions to write comments without it being confusing so I'll introduce it here
+//The NorthA3 part or WestA1 is the beginning direction they take from the start
+//the rest of the letters are just implying which direction they go, l is left r is right f is forward.
+
+import java.util.Scanner;
+
+public class AdventureBook {
+	
+	private Scanner input = new Scanner(System.in);
+	
+  
+	//are there grids or arrays in java?
+	public void Intro(){
+		
+		System.out.println("After getting lost you find yourself trapped in a maze");
+		System.out.println("There are only 1 way to complete this maze");
+		System.out.println("You can use a paper and pen if you please");
+		System.out.println("Keep in mind you will always face northwards after your movements");
+		System.out.println("Whatever way you choose to go copy the exact answer that was given as a option");
+		
+		start();
+	}
+	
+	public void start() {
+		System.out.println("There are four directions, North , East , South , West");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		//if they enter north then it will move it on the map, if east is entered then it'll move east, etc. 
+		if(answer.equals("North")) {
+			NorthA3();
+		}else if(answer.equals("East")) {
+			EastA2();
+		}else if(answer.equals("South")) {
+			SouthA1();
+		}else if(answer.equals("West")) {
+			WestA4();
+		}else {
+			errorIntro();
+		}
+		
+	} 
+	
+	//Just incase a nonvalid term is used then a error message will appear requesting a valid answer
+	public void errorIntro() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("North")) {
+			NorthA3();
+		}else if(answer.equals("East")) {
+			EastA2();
+		}else if(answer.equals("South")) {
+			SouthA1();
+		}else if(answer.equals("West")) {
+			WestA4();
+		}else {
+			errorIntro();
+		}
+		
+	}
+	
+	public void NorthA3() {
+		System.out.println("As you walk North you can either turn left, forward or go back");
+		System.out.println("Which way do you go?");
+		String answer = input.next(); 
+		
+		if(answer.equals("left")) {
+			NorthA3l();
+		}else if(answer.equals("forward")) {
+			NorthA3f();
+		}else if(answer.equals("Back")){
+			start();
+		}else {
+			errorNorthA3();
+		}
+		
+	}
+	
+	public void errorNorthA3() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("left")) {
+			NorthA3l();
+		}else if(answer.equals("forward")) {
+			NorthA3f();
+		}else if(answer.equals("Back")){
+			start();
+		}else {
+			errorNorthA3();
+		}
+		
+	}
+	
+	public void NorthA3l() {
+		System.out.println("As you turn left you there are four directions, North , East , South , West");
+		System.out.println("Which way do you go?");
+		String answer = input.next(); 
+		
+		if(answer.equals("North")) {
+			NorthA3lf();
+		}else if(answer.equals("East")) {
+			NorthA3();
+		}else if(answer.equals("South")) {
+			diespikes();
+		}else if(answer.equals("West")) {
+			NorthA3ll();
+		}else {
+			errorNorthA3l();
+		}
+		
+	}
+	
+	
+	
+	public void errorNorthA3l() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("North")) {
+			NorthA3lf();
+		}else if(answer.equals("East")) {
+			NorthA3();
+		}else if(answer.equals("South")) {
+			diespikes();
+		}else if(answer.equals("West")) {
+			NorthA3ll();
+		}else {
+			errorNorthA3l();
+		}
+		
+		
+		
+	}
+	
+	public void NorthA3ll() {
+		System.out.println("As you walk West you can either turn Left, Down, or Back Right");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Down")) {
+			NorthA3llb();
+		}else if(answer.equals("Left")) {
+			NorthA3lll();
+		}else if(answer.equals("Back")){
+			NorthA3l();
+		}else {
+			errorNorthA3ll();
+		}
+		
+	}
+	
+	public void errorNorthA3ll() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Down")) {
+			NorthA3llb();
+		}else if(answer.equals("Left")) {
+			NorthA3lll();
+		}else if(answer.equals("Back")){
+			NorthA3l();
+		}else {
+			errorNorthA3ll();
+		}
+		
+		
+	}
+	
+	public void NorthA3lll() {
+		System.out.println("As you walk Left you can either turn Left, Down, Forward, or Back Right"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Forward")) {
+			NorthA3lllf();
+		}else if(answer.equals("Back")){
+			NorthA3ll();
+		}else {
+			errorNorthA3lll();
+		}
+		
+	}
+	
+	public void errorNorthA3lll() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Forward")) {
+			NorthA3lllf();
+		}else if(answer.equals("Back")){
+			NorthA3ll();
+		}else {
+			errorNorthA3lll();
+		}
+		
+	}
+	
+	public void NorthA3lllf() {
+		System.out.println("As you walk Forward you can either turn Right, or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Right")) {
+			NorthA3lllfr();
+		}else if(answer.equals("Back")) {
+			NorthA3lll();
+		}else {
+			errorNorthA3lllf();
+		}
+		
+	}
+	
+	public void errorNorthA3lllf() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Right")) {
+			NorthA3lllfr();
+		}else if(answer.equals("Back")) {
+			NorthA3lll();
+		}else {
+			errorNorthA3lllf();
+		}
+		
+	}
+	
+	
+	
+	public void NorthA3lllfr() {
+		System.out.println("As you walk Right you can either turn Forward, Backwards or go Back Left"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrf();
+		}else if(answer.equals("Backwards")) {
+			diespikes();
+		}else if (answer.equals("Back")) {
+			NorthA3lllf();
+		}else {
+			errorNorthA3lllfr();
+		}
+		
+	}
+	
+	public void errorNorthA3lllfr() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrf();
+		}else if(answer.equals("Backwards")) {
+			diespikes();
+		}else if (answer.equals("Back")) {
+			NorthA3lllf();
+		}else {
+			errorNorthA3lllfr();
+		}	
+		
+	}
+	
+	public void NorthA3lllfrf() {
+		System.out.println("As you walk Forward you can either go Forward, Right or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrff();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfr();
+		}else {
+			errorNorthA3lllfrf();
+		}
+		
+	}
+	
+	public void errorNorthA3lllfrf() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrff();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfr();
+		}else {
+			errorNorthA3lllfrf();
+		}
+		
+	}
+	
+	
+	public void NorthA3lllfrff() {
+		System.out.println("As you walk Forward you can either go Forward, Right, Left or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrfff();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrf();
+		}else if(answer.equals("Left")){
+			diespikes();
+		}else{
+			errorNorthA3lllfrff();
+		}
+		
+	}
+	
+	public void errorNorthA3lllfrff() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next(); 
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrfff();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrf();
+		}else if(answer.equals("Left")){
+			diespikes();
+		}else{
+			errorNorthA3lllfrff();
+		}
+		
+		
+	}
+	
+	
+	public void NorthA3lllfrfff() {
+		System.out.println("As you walk Forward you can either go Forward, Right, Left or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+	
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrff();
+		}else if(answer.equals("Left")){
+			NorthA3lllfrfffl();
+		}else{
+			errorNorthA3lllfrfff();
+		}
+	
+	}
+	
+	public void errorNorthA3lllfrfff() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrff();
+		}else if(answer.equals("Left")){
+			NorthA3lllfrfffl();
+		}else{
+			errorNorthA3lllfrfff();
+		}
+	}
+	
+	
+	public void NorthA3lllfrfffl() {
+		System.out.println("As you walk Left you can either go Forward, Right, Left or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrffflf();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrfff();
+		}else if(answer.equals("Left")){
+			diespikes();
+		}else{
+			errorNorthA3lllfrfffl();
+		}
+		
+	}
+	
+	public void errorNorthA3lllfrfffl() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrffflf();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrfff();
+		}else if(answer.equals("Left")){
+			diespikes();
+		}else{
+			errorNorthA3lllfrfffl();
+		}
+	}
+	
+	
+	public void NorthA3lllfrffflf() {
+		System.out.println("As you walk Forward you can either go Forward, Right, or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			NorthA3lllfrffflfr();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrfffl();
+		}else {
+			errorNorthA3lllfrffflf();
+		}
+	}
+	
+	public void errorNorthA3lllfrffflf() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			NorthA3lllfrffflfr();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrfffl();
+		}else {
+			errorNorthA3lllfrffflf();
+		}
+		
+	}
+	
+	public void NorthA3lllfrffflfr() {
+		System.out.println("As you walk Right you can either go Forward, Right, or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrffflfrf();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrffflf();
+		}else {
+			errorNorthA3lllfrffflfr();
+		}
+	}
+	
+	public void errorNorthA3lllfrffflfr() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3lllfrffflfrf();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrffflf();
+		}else {
+			errorNorthA3lllfrffflfr();
+		}
+		
+	}
+	
+	public void NorthA3lllfrffflfrf() {
+		System.out.println("As you walk Forward you can either go Forward, Right, or go Back"); 
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			Win();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrffflfr();
+		}else {
+			errorNorthA3lllfrffflfrf();
+		}
+	}
+	
+	public void errorNorthA3lllfrffflfrf() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			Win();
+		}else if(answer.equals("Back")) {
+			NorthA3lllfrffflfr();
+		}else {
+			errorNorthA3lllfrffflfrf();
+		}
+		
+		
+	}
+	
+	
+	//here is the win function or method quite simple but works
+	public void Win() {
+		System.out.println("You win.");
+	}
+	
+	public void NorthA3lf() {
+		System.out.println("As you continue north you can either turn Left, continue Forward or go Backwards to where you were ");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Backwards")){
+			NorthA3l();
+		}else {
+			errorNorthA3lf();
+		}
+		
+		
+	}
+	
+	public void errorNorthA3lf() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Backwards")){
+			NorthA3l();
+		}else {
+			errorNorthA3lf();
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	public void diespikes() {
+		System.out.println("Spikes fall on your head");
+		System.out.println("You die and restart");
+		
+		Intro();
+	}
+	
+	public void NorthA3llb() {
+		diespikes();
+	}
+	
+	
+	
+	public void NorthA3f() {
+		diespikes();
+	}
+	
+	public void EastA2() {
+		System.out.println("As you walk East you can either go Forward, Right, Down, or go Back Left");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Back")) {
+			start();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			EastA2r();
+		}else if(answer.equals("Forward")) {
+			diespikes();
+		}else {
+			errorEastA2();
+		}
+		
+	}
+	
+	public void errorEastA2() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Back")) {
+			start();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			EastA2r();
+		}else if(answer.equals("Forward")) {
+			diespikes();
+		}else {
+			errorEastA2();
+		}
+		
+		
+	}
+	
+	public void EastA2r() {
+		System.out.println("As you walk Right you can either go Forward, Down, or go Back Left");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			EastA2();
+		}else {
+			errorEastA2r();
+		}
+	}
+	
+	public void errorEastA2r() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			diespikes();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			EastA2();
+		}else {
+			errorEastA2r();
+		}
+		
+	}
+	
+	public void SouthA1() {
+		System.out.println("As you walk south you can either go Left, Right, Down, or go Back Forwards");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			start();
+		}else {
+			errorSouthA1();
+		}
+	}
+	
+	public void errorSouthA1() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next(); 
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Right")) {
+			diespikes();
+		}else if(answer.equals("Down")) {
+			diespikes();
+		}else if(answer.equals("Back")) {
+			start();
+		}else {
+			errorSouthA1();
+		}
+		
+	}
+	
+		
+		
+		
+
+	
+	public void WestA4() {
+		System.out.println("As you walk west you can either turn Left, Forward, or turn Back Right");
+		System.out.println("Which way do you go?");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3llb();
+		}else if(answer.equals("Left")) {
+			WestA4l();
+		}else if(answer.equals("Back")){
+			start();
+		}else{
+			errorWestA4();
+		}
+		
+		
+	}
+	
+	public void errorWestA4() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Forward")) {
+			NorthA3llb();
+		}else if(answer.equals("Left")) {
+			WestA4l();
+		}else if(answer.equals("Back")){
+			start();
+		}else{
+			errorWestA4();
+		} 
+	}
+		
+
+	
+	public void WestA4l() {
+		System.out.print("As you walk Left you can either go Left or back Right");
+		System.out.println("Which way do you go?"); 
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Right")){
+			WestA4();
+		}else {
+			errorWestA4l();
+		}
+		
+			
+	}
+	
+	public void errorWestA4l() {
+		System.out.println("That is a invalid answer, try again");
+		String answer = input.next();
+		
+		if(answer.equals("Left")) {
+			diespikes();
+		}else if(answer.equals("Right")){
+			WestA4();
+		}else {
+			errorWestA4l();
+		}
+		
+	}
+	
+	
+	
+	
+	public static void main(String[] args) {
+		AdventureBook adventure = new AdventureBook();
+		adventure.Intro();
+		
+		
+		
+	}
+	
+	
+	
+	
+}
