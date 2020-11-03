@@ -1,0 +1,136 @@
+package Homeworkassignment;
+
+import java.util.Scanner;
+
+public class Morewhileloops {
+	Scanner input = new Scanner(System.in); 
+	
+	public static void main(String[] args) {
+		Morewhileloops runner = new Morewhileloops();
+		runner.helloThere();
+		
+		
+	
+			
+	}
+	
+	public void greatestCommonDivisor() {
+		System.out.println("Choose a Number");
+		int answer1 = input.nextInt();
+		System.out.println("Choose a Larger Number");
+		int answer = input.nextInt();
+		
+		int i=answer;
+		
+		
+		
+		while(i >= 0) {
+			
+			if (answer%i==0 && answer1%i==0) {
+					System.out.println(i);
+					break;
+				}
+			i=i-1;
+		}
+			
+			
+	}
+	
+	
+	public void leastCommonMultiple() {
+		System.out.println("Choose a Number");
+		int answer1 = input.nextInt();
+		System.out.println("Choose a Larger Number");
+		int answer = input.nextInt();
+		
+		int i=1;
+		
+		while(i <= answer) {
+			i=i+1;
+			if (answer%i==0 && answer1%i==0) {
+				System.out.println(i);
+				break;
+			}
+		
+		}
+		
+		
+	}
+	
+	public void primeOrNot() {
+		System.out.println("Choose a Number");
+		int answer1 = input.nextInt();
+		
+		int i=2;
+		boolean test = false; 
+		while(i < answer1) {
+			if(answer1%i ==0) {
+				test=true;
+				break;
+			}
+			i=i+1;
+			
+		}
+		if(!test) {
+			System.out.println("Prime");
+		}else if(test) {
+			System.out.println("Not Prime");
+		}
+		
+		
+	}
+	
+	public void theFactorial() {
+		System.out.println("Choose a Number");
+		int answer1 = input.nextInt();
+		
+		int count=1; 
+		
+		int i=1;
+		while(count <=answer1) {
+			i=count*i;
+			count=count+1;
+		}
+		System.out.println(i);
+		
+		
+		
+		
+	}
+	
+	public void divisibleBy() {
+		System.out.println("Choose a Number");
+		int answer1 = input.nextInt();
+		
+		int i=2;
+		
+		
+		
+		while(i <= answer1) {
+			
+			if (answer1%i==0 ) {
+					System.out.println(i);
+				}
+			i=i+1;
+		}
+		
+		
+	}
+	
+	public void helloThere() {
+		System.out.println("Choose a Number");
+		int answer1 = input.nextInt();
+		
+		int i=1;
+		
+		while(i <= answer1) {
+			System.out.println("hi");
+			i=i+1;
+		}
+		
+	}
+	
+	
+		
+		
+}
