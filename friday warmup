@@ -1,0 +1,53 @@
+package Hopefully;
+
+import java.util.Scanner;
+
+public class Friday111320 {
+	static Scanner input = new Scanner(System.in); 
+	
+	public static void main(String[]args) {
+		Friday111320 runner = new Friday111320();
+		runner.factors();
+		
+	}
+	public void digits(int n) {
+		
+		
+		while(n >0) {
+			
+			System.out.println(n%10);
+			
+			n/=10;
+			
+		}
+		
+	}
+	
+	public void rectangle(int x, int y) {
+		
+		
+		
+	}
+	
+	public void factors() {
+		System.out.println("Choose a Number");
+		int number = input.nextInt();
+
+
+	    for (int i = 1; i <= number; i++) {
+	    		System.out.println("");
+	    	for (int j = 1; j <= i; j++) {
+	    		
+	    			System.out.print(i % j == 0 ? j + "," : "" );
+	    		
+	    	}
+		
+	    }
+		
+		
+		
+	}
+
+
+
+}
