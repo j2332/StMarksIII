@@ -1,0 +1,97 @@
+package Homeworkassignment;
+
+import java.util.Scanner;
+
+
+public class forLoopsAndNestedLoops {
+
+	Scanner input = new Scanner(System.in); 
+	
+	
+	public static void main(String[]args) {
+		
+		forLoopsAndNestedLoops runner = new forLoopsAndNestedLoops();
+		runner.pascalsHell();
+		
+		for(int i=0; i <10; i++) {
+			
+			
+		}
+		
+	}
+	
+	public void multiplicationTable() {
+		
+		for(int i=1; i <11; i++) {
+			System.out.println();
+			System.out.println();
+			for(int c=1; c <13; c++) {
+				System.out.print(c*i + " ");
+				
+				
+			}
+		}
+		
+	}
+	
+	public void primeFrom() {
+			System.out.println("Choose a Number");
+			int x = input.nextInt();
+		for(int j=1; j <= x; j++) {
+		    boolean isPrime = true; 
+		    
+		       for (int i = 2; i <= j; i++){ 		  	  
+		          if(j%i==0) {
+		        	  System.out.println("not prime");
+		        	  isPrime=false;
+		        	  break;
+		          }
+		       
+		       
+		       
+		       }
+		       if(isPrime) {
+		    	   System.out.println("prime");
+		       }
+		  
+		
+		}
+	}
+	
+	static int fact(int num) {
+		int factorial;
+
+		for(factorial = 1; num > 1; num--){
+			factorial *= num;
+		}
+		return factorial;
+	    }
+	
+	static int pleaswork(int n,int r) {
+		return fact(n) / ( fact(n-r) * fact(r) );
+	}
+	
+	
+	public void pascalsHell() {
+		System.out.println("Enter number of rows:");
+		Scanner scanner = new Scanner(System.in);
+		int rows = scanner.nextInt();
+		
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < rows-i; j++){
+				System.out.print(" ");
+			}
+			for(int j = 0; j <= i; j++){
+				System.out.print(" "+pleaswork(i, j));
+			}
+			System.out.println();
+	 	}
+		
+	}
+	
+	
+	
+	
+	
+	
+}
