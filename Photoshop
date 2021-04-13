@@ -1,0 +1,382 @@
+package Hopefully;
+
+//Photoshop program that can run several manipulations on 
+//an image
+//filler code by Mr. David
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+
+import java.util.Scanner;
+public class PhotoShopProject extends Component {
+	
+	private Scanner input = new Scanner(System.in);
+	// the name of the output file. will be determined by which methods are called
+ private String outputName;
+ 
+ // the 2d array of colors representing the image
+ private Color[][] pixels;
+ 
+ // the width and height of the image 
+ private int w,h;
+ 
+ 
+ // this code just runs through the 2d array and adds the amount the user wants to each rgb value 
+ //and then if statements to make sure it doesn't go too high or too low
+ public void brighten(int amount) {
+     outputName = "brightened_" + outputName;
+     
+     for(int i= 0; i<pixels.length; i++) {
+    	 for(int j= 0; j<pixels[i].length; j++) {
+        	 
+    		 Color c=pixels[i][j];
+    		 
+    		 int r =c.getRed()+amount;
+    		 int g =c.getGreen()+amount;
+    		 int b =c.getBlue()+amount;
+    		 //make sure it doesn't go above 0
+    		 if(r > 255) {
+    			 r=255;
+    		 }
+    		 if(g > 255) {
+    			 g=255;
+    		 }
+    		 if(b > 255) {
+    			 b=255;
+    		 }
+    		 
+    		 //make sure it doesn't go below 0
+    		 if(r < 0) {
+    			 r=0;
+    		 }
+    		 if(g < 0) {
+    			 g=0;
+    		 }
+    		 if(b < 0) {
+    			 b=0;
+    		 }
+    		 
+    		 pixels[i][j]=new Color(r, g, b);
+    		 
+         }
+     }
+ }
+ 
+ // how this method works is that it flips the order of the rows
+ //so top goes to bottom then 2nd to top to 2nd to bottom etc
+ //the vertical is the same but with columns 
+ public void flip(boolean horizontally) {
+     outputName = (horizontally?"h":"v") + "_flipped_" + outputName;
+     Color temp;
+     if(horizontally) {
+    	 
+    	 for (int i = 0; i < pixels.length; i++) {
+    		    for (int j = 0; j < pixels[i].length /2; j++) {
+    		        temp = pixels[i][j];
+    		        pixels[i][j] = pixels[i][pixels.length-1-j];
+    		        pixels[i][pixels.length-1-j] = temp;
+    		    }
+    		}
+    
+
+    }
+    if(horizontally=false) {
+    	for (int i = 0; i < pixels.length / 2; i++) {
+    	    for (int j = 0; j < pixels[i].length; j++) {
+    	        temp = pixels[i][j];
+    	        pixels[i][j] = pixels[pixels.length-1- i][j];
+    	        pixels[pixels.length-1-i][j] = temp;
+    	    }
+    	}
+    }
+     
+     
+     
+     
+     
+     
+     
+     
+ }
+ 
+ // negates an image
+ // to do this: subtract each pixel's rgb value from 255 
+ // and use this as the new value
+ public void negate() {
+     outputName = "negated_" + outputName;
+     for(int i= 0; i<pixels.length; i++) {
+    	 for(int j= 0; j<pixels[i].length; j++) {
+        	 
+    		 Color c=pixels[i][j];
+    		 
+    		 int r =c.getRed();
+    		 int g =c.getGreen();
+    		 int b =c.getBlue();
+  
+    		 //just subtracts the color from 255 which causes the effect
+    		 pixels[i][j]=new Color(255-r,255-g, 255-b);
+    		 
+         }
+     }
+      
+ }
+ 
+//this makes the image 'simpler' by redrawing it using only a few colors
+ // to do this: for each pixel, find the color in the list that is closest to
+ // the pixel's rgb value. 
+ // use this predefined color as the rgb value for the changed image.
+ public void simplify() {
+ 
+ 		// the list of colors to compare to. Feel free to change/add colors
+ 		Color[] colorList = {Color.BLUE, Color.RED,Color.ORANGE, Color.MAGENTA,
+             Color.BLACK, Color.WHITE, Color.GREEN, Color.YELLOW, Color.CYAN};
+     outputName = "simplified_" + outputName;
+     Color temp = null;
+     for(int i= 0; i<pixels.length; i++) {
+    	 for(int j= 0; j<pixels[i].length; j++) {
+    		 for (int x = 0; x < colorList.length-1; x++) {
+    			 if(distance(pixels[i][j],colorList[x])<distance(pixels[i][j],colorList[x+1])) {
+    				 temp=colorList[x];
+    			 } 
+    		 }
+    		 pixels[i][j]=temp;
+    	 }
+     }	
+ }
+ 
+ // optional helper method (recommended) that finds the 'distance' 
+ // between two colors.
+ // use the 3d distance formula to calculate
+ public double distance(Color c1, Color c2) {
+//	 (𝑟1−𝑟2)2+(𝑔1−𝑔2)2+(𝑏1−𝑏2)
+	 	int total=0;
+	 	total=((c1.getRed()*c1.getRed()-c2.getRed()*c2.getRed())+(c1.getBlue()*c1.getBlue()+c2.getBlue()*c2.getBlue())+(c1.getGreen()*c1.getGreen()+c2.getGreen()*c2.getGreen()));
+	 	Math.sqrt(total);
+ 		return total;	// fix this
+ }
+ 
+ 
+ //How this method works is that there is a for loop going through the entire array
+ //every 3x3 area it gets the sum of all the values and then divides it by 9 and then puts it
+//back into the array, then the 3x3 area are all this blured color
+ public void blur() {
+		outputName = "blurred_" + outputName;
+		Color[][]pixels2=new Color[pixels.length][pixels[0].length];
+		for(int i=1; i<pixels.length-1; i++) {
+	    	 for(int j=1; j<pixels[i].length-1; j++) {
+	    		 int r=0;
+	    		 int g=0;
+	    		 int b=0;
+	    		 for(int x=i-1; x<=i+1; x++) {
+	    	    	 for(int c=j-1; c<=j+1; c++) {
+	    	    		 r+=pixels[x][c].getRed();
+	    	    		 g+=pixels[x][c].getGreen();
+	    	    		 b+=pixels[x][c].getBlue();
+	    	    		 
+	    	    	 }
+	    	     }
+	    		 
+	    		 
+	    		 pixels2[i][j]=new Color(r/9,g/9, b/9);
+	    		 
+	    		 
+	         }
+	     }
+		for(int i=1; i<pixels.length-1; i++) {
+	    	 for(int j=1; j<pixels[i].length-1; j++) {
+	    		 pixels[i][j]=pixels2[i][j];
+	    	 }
+		}
+	}
+ 
+ 
+ // this method is the rgb value for the 'edged' image
+ // this is pretty much the same as blur however you have to subtract the sum of the surrounding pixels 
+ // from the inital pixel by 8 
+ public void edge() {
+     outputName = "edged_" + outputName;
+     Color[][]pixels2=new Color[pixels.length][pixels[0].length];
+     for(int i=1; i<pixels.length-1; i++) {
+    	 for(int j=1; j<pixels[i].length-1; j++) {
+    		 int r=0;
+    		 int g=0;
+    		 int b=0;
+    		 for(int x=i-1; x<=i+1; x++) {
+    	    	 for(int c=j-1; c<=j+1; c++) {
+    	    		 r+=pixels[x][c].getRed();
+    	    		 g+=pixels[x][c].getGreen();
+    	    		 b+=pixels[x][c].getBlue();
+    	    		 
+    	    	 }
+    	     }
+    		 
+    		 int red=pixels[i][j].getRed()*9-r;
+    		 int green=pixels[i][j].getGreen()*9-g;
+    		 int blue=pixels[i][j].getBlue()*9-b;
+    		 if(red>255) {
+    			 red=255;
+    		 }
+    		 if(green>255) {
+    			 green=255;
+    		 }
+    		 if(blue>255) {
+    			 blue=255;
+    		 }
+    		 if(red<0) {
+    			 red=0;
+    		 }
+    		 if(green<0) {
+    			 green=0;
+    		 }
+    		 if(blue<0) {
+    			 blue=0;
+    		 }
+    		 
+    		 pixels2[i][j]=new Color(red,green, blue);
+    		 
+         }
+     }
+     for(int i=1; i<pixels.length-1; i++) {
+    	 for(int j=1; j<pixels[i].length-1; j++) {
+    		 pixels[i][j]=pixels2[i][j];
+    	 }
+	}
+    	
+    		 
+     
+    				
+    		 
+    	
+    		 
+         
+     
+ }
+ 
+ public void crop() {
+	 outputName = "crop" + outputName;
+	 System.out.println("How much shorter do you want the image?");
+	 int answer = input.nextInt(); 
+	 System.out.println("How much thiner do you want the image?");
+	 int answer1 = input.nextInt();
+	 
+	 for(int i=1; i<pixels.length-answer; i++) {
+    	 for(int j=1; j<pixels[i].length-answer1; j++) {
+    		 System.out.println(pixels[i][j]);
+    	 }
+	 }
+ }
+ 
+ 
+ 
+ // *************** DON'T MESS WITH THE BELOW CODE **************** //
+ 
+ // feel free to check it out, but don't change it unless you've consulted 
+ // with Mr. David and understand what the code's doing
+ 
+ 
+
+ public void run() {
+ 	JFileChooser fc = new JFileChooser();
+		File workingDirectory = new File(System.getProperty("user.dir")+System.getProperty("file.separator")+ "Images");
+		fc.setCurrentDirectory(workingDirectory);
+		fc.showOpenDialog(null);
+		File my_file = fc.getSelectedFile();
+		if (my_file == null)
+			System.exit(-1);
+		
+		// reads the image file and creates our 2d array
+     BufferedImage image;
+		try {
+			image = ImageIO.read(my_file);
+		
+	        BufferedImage new_image = new BufferedImage(image.getWidth(),
+	                        image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	        create_pixel_array(image);
+			outputName = my_file.getName();
+			
+			// runs the manipulations determined by the user
+			System.out.println("Enter the manipulations you would like to run on the image.\nYour "
+					+ "choices are: brighten, flip, negate, blur, edge, or simplify.\nEnter each "
+					+ "manipulation you'd like to run, then type in 'done'.");
+			Scanner in = new Scanner(System.in);
+			String action = in.next().toLowerCase();
+			while (!action.equals("done")) {
+	    			try {
+		    			if (action.equals("brighten")) {
+		    				System.out.println("enter an amount to increase the brightness by");
+		    				int brightness = in.nextInt();
+		        			Method m = getClass().getDeclaredMethod(action, int.class);
+		        			m.invoke(this, brightness);
+		    			}
+		    			else if (action.equals("flip")) {
+		    				System.out.println("enter \"h\" to flip horizontally, anything else to flip vertically.");
+		        			Method m = getClass().getDeclaredMethod(action, boolean.class);
+		        			m.invoke(this, in.next().equals("h"));
+		    			}
+		    			else {
+		        			Method m = getClass().getDeclaredMethod(action);
+		        			m.invoke(this, new Object[0]);
+		    			}
+		    			System.out.println("done. enter another action, or type 'done'");
+	    			}
+	    			catch (NoSuchMethodException e) {
+	    				System.out.println("not a valid action, try again");
+	    			} catch (IllegalAccessException e) {e.printStackTrace();System.exit(1);} 
+	    			catch (IllegalArgumentException e) {e.printStackTrace();System.exit(1);}
+	    			catch (InvocationTargetException e) {e.printStackTrace();System.exit(1);}
+	    			
+	    			action = in.next().toLowerCase();
+	    		} 
+	        in.close();
+	        
+	        // turns our 2d array of colors into a new png file
+	        create_new_image(new_image);
+	        File output_file = new File("Images/" + outputName);
+	        ImageIO.write(new_image, "png", output_file);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+ }
+		
+ 
+ public void create_pixel_array(BufferedImage image) {
+     w = image.getWidth();
+     h = image.getHeight();
+     pixels = new Color[h][];
+     for (int i = 0; i < h; i++) {
+         pixels[i] = new Color[w];
+         for (int j = 0; j < w; j++) {
+             pixels[i][j] = new Color(image.getRGB(j,i));
+         }
+     }
+ }
+
+ public void create_new_image(BufferedImage new_image) {
+     for (int i = 0; i < h; i++) {
+         for (int j = 0; j < w; j++) {
+         		new_image.setRGB(j, i, pixels[i][j].getRGB());
+         }
+     }
+ }
+
+ public static void main(String[] args) {
+		new PhotoShopProject();
+	}
+
+ public PhotoShopProject() {
+		run();
+ }
+}
