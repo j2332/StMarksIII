@@ -1,0 +1,11 @@
+package PokemonProject;
+
+public class duck extends Pokemon{
+
+	public duck() {
+		super("duck", 2, 5, "th-2.png", new Move[] { new Move("Bark", 0, 5, 0),
+				new Move("Bite", 10, 10, 0), new Move("Cook", 6, 5, 0), new Move("duck.duck.goose", 0, 5, 0)});
+		
+	}
+
+}
