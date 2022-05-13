@@ -1,0 +1,449 @@
+package Latin;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+
+
+
+//Worbis
+
+
+
+public class LatinGame {
+	private Color backco=new Color(18,18,19);
+	private String s="";
+	private int turn=0;
+	private Boolean off=false;
+	final private String goal= "MEANS";
+	
+	class cage{
+		int x,y, width=50, height=50;
+		boolean entered;
+		String v="";
+		private String state="";
+		Font f;
+		
+		public cage(int xs, int ys) {
+			x=xs;
+			y=ys;
+		}
+		
+		public String getString() {
+			return v;
+		}
+		public void setString(String s) {
+			this.v=s;
+		}
+		
+		public void setState(String temp) {
+			String w= temp.toUpperCase();
+			if(w.equals("GREEN")|| w.equals("YELLOW")|| w.equals("RED")) {
+				state=w;
+			}
+			
+		}
+		
+		public void draw(Graphics g) {
+			
+			if(state.equals("")) {
+				g.setColor(new Color(58,58,60));
+				g.drawRect(x, y, width, height);
+				
+			}else if(state.equals("GREEN")) {
+				g.setColor(new Color(83,141,78));
+				g.fillRect(x, y, width, height);
+			}else if(state.equals("YELLOW")) {
+				g.setColor(new Color(180,159,58));
+				g.fillRect(x, y, width, height);
+			}else if(state.equals("RED")) {
+				g.setColor(new Color(58,58,60));
+				g.fillRect(x, y, width, height);
+			}
+			
+			f= new Font("Helvetica", Font.BOLD, 25);
+			
+			FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
+			int textWidth = (int)(f.getStringBounds(v, frc).getWidth());
+			int textHeight = (int)(f.getStringBounds(v, frc).getHeight());
+			
+			g.setFont(f); 
+//			g.setColor(Color.CYAN);
+			g.setColor(Color.WHITE);
+	        g.drawString(v, x+(width/2-textWidth/2), y+textHeight+height/3-7);
+			
+		}
+		
+	}
+	
+	class key {
+		int x, y, width=44, height=58; 
+		Color c=new Color(128,131,132);
+		String s; 
+		Font f;
+		
+		public key( String s,int x, int y) {
+			this.x=x;
+			this.y=y;
+			this.s=s;
+		}
+		public Shape copy() {
+			return null;
+		}
+		public String getString() {
+			return s;
+		}
+		public void widthChange(int z) {
+			width=z;
+		}
+		public void setColor(Color c) {
+			this.c=c;
+		}
+		public void draw(Graphics g) {
+			//Rectangle 
+			Graphics2D g2 = (Graphics2D) g;
+			RoundRectangle2D temp= new RoundRectangle2D.Double(x, y, width, height, 10, 10);
+			
+			g2.setStroke(new BasicStroke(2.0f));
+			g2.setColor(c);
+			g2.fill(temp);
+			g2.draw(temp);
+			
+			//Text 
+			f= new Font("Helvetica", Font.BOLD, 15);
+			
+			FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
+			int textWidth = 
+					(int)(f.getStringBounds(s, frc).getWidth())
+					;
+			int textHeight = 
+					(int)(f.getStringBounds(s, frc).getHeight())
+					;
+			g2.setColor(Color.WHITE);
+			g.setFont(f); 
+	        g.drawString(s, x+(width/2-textWidth/2), y+textHeight+height/3);
+		}
+		public boolean isOn(int m_x, int m_y) {
+			return(m_x>=x && m_x<=x+width && m_y>=y && m_y<=y+height);
+		}
+		public void resize(int x1, int y1, int x2, int y2) {	
+		}
+	}
+	
+	private final int Height=800, Width=1000;
+	
+	private JFrame window = new JFrame();
+	private ArrayList<key> keylist = new ArrayList<key>(); 
+	private HashMap<Integer, ArrayList<cage>> cagemap = new HashMap<>();
+	private ArrayList<cage> cagelist = new ArrayList<>();
+	private ArrayList<cage> cagelistg = new ArrayList<>();
+	private ArrayList<String> alph = new ArrayList<>();
+	
+	
+	private cage[][]cageArr = new cage[6][5];
+	private int count=0;
+	
+	
+	public LatinGame() {
+		
+		alphSet();
+		keySetUp();
+		cageSetUp2();
+		
+		window.setSize(Width, Height);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		window.setLocationRelativeTo(null);
+		
+		JPanel container = new JPanel() {};
+		
+		BoxLayout boxlayout = new BoxLayout(container, BoxLayout.Y_AXIS);
+		container.setLayout(boxlayout);
+		
+
+		JPanel canvas = new JPanel() {
+			public void paint(Graphics g) {
+				super.paint(g);
+				
+				g.setColor(backco);
+				g.fillRect(0, 0, Width, Height);
+				
+				g.setColor(Color.CYAN);
+				g.drawString(s, 100, 100);
+				
+				
+				
+				
+				
+				for(int i=0; i< keylist.size(); i++) {
+					keylist.get(i).draw(g);
+				}
+				
+				
+				maintain();
+				for(int i=0; i<cageArr.length; i++) {
+					for(int j=0; j<cageArr[i].length; j++) {
+						cageArr[i][j].draw(g);
+					}
+				}
+			}
+		};
+			
+		
+		container.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+				if(e.getKeyCode()==8) {
+					if(s.length()>0) 
+						if(off==false)
+							s=s.substring(0, s.length()-1);
+					
+					window.getContentPane().repaint();
+				}else if(e.getKeyCode()==10){
+					if(s.length()==5)
+						check();
+					
+				}else {
+					if(e.getKeyCode()>=65 && e.getKeyCode()<=122) {
+						if(s.length()<5) 
+							s+=e.getKeyChar();
+					}
+				}
+				
+				
+				window.getContentPane().repaint();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+				
+			}
+			
+		});
+		canvas.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				for(key k : keylist) {
+					if(k.isOn(e.getX(), e.getY())) {
+						if(k.getString()=="delete") {
+							if(s.length()>0) 
+								s=s.substring(0, s.length()-1);
+						}else {
+							if(s.length()<5)
+								s+=k.getString();
+						}
+					}	
+				}
+				window.getContentPane().repaint();
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+//		container.setBorder(BorderFactory.createTitledBorder("Worbis"));
+		
+		container.add(canvas);
+		
+		window.add(container);
+		window.setVisible(true);
+		container.requestFocus();
+		
+		window.getContentPane().repaint();
+	}
+	
+	public void check() {
+
+		
+		if(s.toUpperCase().equals(goal)) {
+			for(int i=0; i<cageArr[turn].length; i++) {
+				cageArr[turn][i].setState("GREEN");;	
+			}
+			off=true;
+		}else {
+			String temp="";
+			String temp2="";
+			for(int i=0; i<cageArr[turn].length; i++) {
+				if(cageArr[turn][i].getString().equals(goal.substring(i, i+1))) {
+					cageArr[turn][i].setState("GREEN");
+					getKey(cageArr[turn][i].getString()).setColor(new Color(83,141,78));
+				}else if(goal.contains(cageArr[turn][i].getString())){
+					cageArr[turn][i].setState("YELLOW");
+					getKey(cageArr[turn][i].getString()).setColor(new Color(180,159,58));
+				}else {
+					cageArr[turn][i].setState("RED");
+					getKey(cageArr[turn][i].getString()).setColor(new Color(58,58,60));
+				}
+			}
+			s="";
+			turn++;
+		}
+	}
+	
+	
+	public void winner() {
+		
+	}
+	
+	public void maintain() {
+		
+		
+		for(int i=0; i<cageArr[turn].length; i++) {
+			cageArr[turn][i].setString(" ");
+			
+		}
+		
+		for(int i=0; i<s.length(); i++) {
+			cageArr[turn][i].setString(s.substring(i, i+1).toUpperCase());
+			
+		}
+		
+		
+		window.getContentPane().repaint();
+	}
+	
+	public key getKey(String s) {
+		for(key k : keylist) {
+			if(k.getString().equals(s))
+				return k;
+		}
+		return null;
+		
+	}
+	public void cageSetUp2() {
+		for(int i=0; i<cageArr.length; i++) {
+			for(int j=0; j<cageArr[i].length; j++) {
+				cageArr[i][j]=new cage(350+55*j, 50+55*i);
+			}
+		}
+	}
+	
+	
+	public void keySetUp() {
+		int offset=52;
+		int count1=0;
+		int count2=0;
+		int count3=0;
+		
+		for(int i=0; i<alph.size(); i++) {
+			if(i<10) {
+				keylist.add(new key(alph.get(i), 100+52*count1, 502));
+				count1++;
+			}else if(i<19) {
+				keylist.add(new key(alph.get(i), 130+52*count2, 567));
+				count2++;
+			}else {
+				keylist.add(new key(alph.get(i), 182+52*count3, 632));
+				count3++;
+			}
+		}
+		
+		//3 row start- 1 row start -9
+		
+		key enter = new key("enter", 100, 632);
+		enter.widthChange(73);
+		keylist.add(enter);
+		
+		key del = new key("delete", 546, 632);
+		del.widthChange(73);
+		keylist.add(del);
+		
+	}
+		
+	
+	public void alphSet() {
+		alph.add("Q");
+		alph.add("W");
+		alph.add("E");
+		alph.add("R");
+		alph.add("T");
+		alph.add("Y");
+		alph.add("U");
+		alph.add("I");
+		alph.add("O");
+		alph.add("P");
+		alph.add("A");
+		alph.add("S");
+		alph.add("D");
+		alph.add("F");
+		alph.add("G");
+		alph.add("H");
+		alph.add("J");
+		alph.add("K");
+		alph.add("L");
+		alph.add("Z");
+		alph.add("X");
+		alph.add("C");
+		alph.add("V");
+		alph.add("B");
+		alph.add("N");
+		alph.add("M");
+	}
+		
+	public static void main(String[] args) {
+		new LatinGame();
+	}
+	
+	
+	
+}
